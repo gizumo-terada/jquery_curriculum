@@ -86,16 +86,13 @@
     <script>
     $(".select").change(function() {
       var btn = $(this).val();
-      if(btn == "all") {
-        $(".list li").each(function() {
-          $(this).show()
-        });
+      if(btn === "all") {
+        $(".list li").show()
       } else {
         $(".list li").each(function() {
-          if($(this).data("category-type") == btn) {
+          $(this).hide();
+          if($(this).data("category-type") === btn) {
             $(this).show();
-          } else {
-            $(this).hide();
           }
         });
       }
