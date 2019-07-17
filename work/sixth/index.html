@@ -22,7 +22,7 @@
     <script src="../../common/js/jquery.js"></script>
     <script>
       $(".input").keyup(function(){
-        $(".rest-count") - $(".input").val().replace(/\s+/g,'').length;
+        $(".rest-count") - $(this).val().replace(/\s+/g,'').length;
       });
 
       if ($(".rest-count") < 0) {
