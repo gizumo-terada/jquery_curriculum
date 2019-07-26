@@ -22,8 +22,8 @@
     <script src="../../common/js/jquery.js"></script>
     <script>
       $(".input").keyup(function(){
-        var x = $(this).val().replace(/\s+/g,'').length;
-        var num = 30 - x;
+        var numCount = $(this).val().replace(/\s+/g,'').length;
+        var num = 30 - numCount;
         $(".rest-count").text(num)
 
         if ($(".rest-count").text() < 0) {
