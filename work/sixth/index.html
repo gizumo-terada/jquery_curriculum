@@ -27,7 +27,7 @@
         var num = max - numCount;
         $(".rest-count").text(num)
 
-        if ($(".rest-count").text() < 0) {
+        if (num < 0) {
         $(".rest-count").addClass('red');
         } else {
         $(".rest-count").removeClass('red');
