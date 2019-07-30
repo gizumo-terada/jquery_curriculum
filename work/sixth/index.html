@@ -21,17 +21,16 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+      var max = $(".rest-count").text();
       $(".input").keyup(function(){
         var numCount = $(this).val().replace(/\s+/g,'').length;
-        var num = 30 - numCount;
+        var num = max - numCount;
         $(".rest-count").text(num)
 
         if ($(".rest-count").text() < 0) {
-        $(".rest-count").css('color', 'red');
-        }
-
-        if ($(".rest-count").text() >= 0) {
-        $(".rest-count").css('color', '#999');
+        $(".rest-count").addClass('red');
+        } else {
+        $(".rest-count").removeClass('red');
         }
       });
 
