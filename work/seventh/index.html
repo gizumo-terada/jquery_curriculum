@@ -27,24 +27,31 @@
     <script src="../../common/js/jquery.js"></script>
     <script>
       var pages = []; // 位置情報、座標
-      var num = $('.slider-list li').length; // 個数の取得
+      var numCount = $('.slider-list li').length; // 個数の取得
       var leftButton = $(".is-prev").data(); // data属性(左ボタン)の取得
       var rightButton = $(".is-next").data(); // data属性(右ボタン)の取得
+      var num = 0;
+      for(var i = 0; i < numCount; i++){
+        if (i == 0) {
+          pages.push(0);
+        } else {
+            num += - $('.slider-list li').eq(i).width();
+          pages.push(num);
+        }
+    	}
 
-        for(var i = 0; i < num; i++){
-		      pages.push($('.slider-list li').eq(i).width());
-      	}
+      console.log(pages);
 
       $(".slider-ctrl-btn").click(function() {
-        $(".slider-list").animate({left: pages})
-        if (pages >= num) {
+        $(".slider-list").animate({left: pages[1]})
+        if (pages >= numCount) {
           $(".slider-list").animate({left: pages[pages.length - 1]})
         }
       });
 
       $(".slider-ctrl-btn").click(function() {
         $(".slider-list").animate({left: - pages})
-        if (pages <= num) {
+        if (pages <= numCount) {
           $(".slider-list").animate({left: pages[0]})
         }
       });
@@ -57,7 +64,6 @@
       // .data() 要素のdata属性を取得します。
       // .width() 要素の幅を取得します。
       // .length 要素の個数を取得します。
-      // forを使ってnum分繰り返してpagesにimgWidthを格納していく
       // クリックされた段階で画像の位置を出す → forを関数の外に用意する
       // $('.slider-list li').width();だと、最初の画像のサイズしか取得できていないから工夫が必要
       // クリックされる対象をslider-ctrl-btnにして、クリックされた後data属性のなんなのかを理解させるためにdata属性を使う
