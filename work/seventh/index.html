@@ -39,21 +39,15 @@
         }
     	}
 
-      console.log($(".slider-ctrl-btn")[0]);
-      console.log($(".slider-ctrl-btn")[1]);
-
-      $(".slider-ctrl-btn")[0].click(function() {
-        $(".slider-list").animate({left: pages[0]})
-        // if (pages >= numCount) {
-        //   $(".slider-list").animate({left: pages[pages.length - 1]})
-        // }
-      });
-
-      $(".slider-ctrl-btn")[1].click(function() {
-        $(".slider-list").animate({left: pages[1]})
-        // if (pages <= numCount) {
-        //   $(".slider-list").animate({left: pages[0]})
-        // }
+      $(".slider-ctrl-btn").click(function() {
+        console.log($(this).data('ctrl'));
+        
+        if ($(this).data('ctrl') === 'next') {
+          $(".slider-list").animate({left: pages[0]})
+        }
+        else {
+          $(".slider-list").animate({left: pages[2]})
+        }
       });
 
       // 今回やるのはスライドショーです。
