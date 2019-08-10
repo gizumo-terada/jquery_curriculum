@@ -36,8 +36,6 @@
     	}
 
       $(".slider-ctrl-btn").click(function() {
-        console.log($(this).data('ctrl'));
-        
         if ($(this).data('ctrl') === 'next') {
           $(".slider-list").animate({left: pages[num]})
         }
