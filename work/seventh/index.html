@@ -31,12 +31,8 @@
       var num = 0;
 
       for(var i = 0; i < numCount; i++){
-        if (i == 0) {
-          pages.push(0);
-        } else {
-            num += - $('.slider-list li').eq(i).width();
-          pages.push(num);
-        }
+        num += - $('.slider-list li').eq(i).width();
+        pages.push(num);
     	}
 
       $(".slider-ctrl-btn").click(function() {
