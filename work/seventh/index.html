@@ -26,8 +26,8 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
-      var pages = []; // 位置情報、座標
-      var numCount = $('.slider-list li').length; // 個数の取得
+      var pages = [];
+      var numCount = $('.slider-list li').length;
       var num = 0;
 
       for(var i = 0; i < numCount; i++){
@@ -43,10 +43,10 @@
         console.log($(this).data('ctrl'));
         
         if ($(this).data('ctrl') === 'next') {
-          $(".slider-list").animate({left: pages[0]})
+          $(".slider-list").animate({left: pages[num]})
         }
         else {
-          $(".slider-list").animate({left: pages[2]})
+          $(".slider-list").animate({left: pages[-num]})
         }
       });
 
