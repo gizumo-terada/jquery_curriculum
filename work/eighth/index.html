@@ -28,6 +28,14 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+      $(window).scroll(function() {
+        if($(window).scrollTop() >= 100){
+          $('.scrollTopBtn').fadeIn(500);
+        } else {
+          $('.scrollTopBtn').fadeOut(500);
+        }
+      });
+      
       // 今回やるのはページ内スクロールです。
       // 左上にあるメニューを押して、そのタイトルと同じ位置までスクロールするアニメーションです。
       // また100pxほどスクロールすると右下にボタンがフェードインします。
