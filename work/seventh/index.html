@@ -27,26 +27,35 @@
     <script src="../../common/js/jquery.js"></script>
     <script>
       var pages = [];
+      var pages2 = [];
       var numCount = $('.slider-list li').length;
       var num = 0;
+      var num2 = 0;
 
       for(var i = 0; i < numCount; i++){
         if (i == 0) {
           pages.push(0);
+          pages2.push(0);
         } else {
             num += - $('.slider-list li').eq(i).width();
+            num2 += 1;
           pages.push(num);
+          pages2.push(num2);
         }
     	}
+      console.log(pages); // [0,600,1200,1800]
+      console.log(pages2); // [0,1,2,3]
 
-      $(".slider-ctrl-btn").click(function() {
+      $(".slider-ctrl-btn").click(function () {
         if ($(this).data('ctrl') === 'next') {
-          $(".slider-list").animate({left: pages[num]})
-        }
-        else {
-          $(".slider-list").animate({left: pages[-num]})
+           // もし押されたらnum2の次の数値が呼ばれる
+          var x = x + 1;
+          $(".slider-list").animate({left: pages[num2[x]]})
+        } else if ($(this).data('ctrl') === 'prev') {
+          $(".slider-list").animate({left: pages[-num2[x]]})
         }
       });
+
 
       // 今回やるのはスライドショーです。
       // 右方向には右のボタンを押すと移動し、左方向には左のボタンを押すと移動する。また右端にいる状態で右のボタンを押すと最初の位置に戻り、 左端にいる状態で左のボタンを押すと最後の位置に移動する。data属性にprev,nextを記述してあるのでこちらを取得すると楽です。
