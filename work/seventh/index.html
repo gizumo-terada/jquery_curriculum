@@ -35,7 +35,7 @@
         if (i == 0) {
           pages.push(0);
         } else {
-          num += - $('.slider-list li').eq(i).width();
+          num += - $('.slider-list li').eq(i - 1).width();
           pages.push(num);
         }
     	}
@@ -47,15 +47,14 @@
           if (pagesNum === pages.length) {
             pagesNum = 0;
           }
-          $(".slider-list").animate({left: pages[pagesNum]})
         } else if ($(this).data('ctrl') === 'prev') {
           var back = -1;
           pagesNum = pagesNum + back;
           if (pagesNum === -1) {
             pagesNum = pages.length - 1;
           }
-          $(".slider-list").animate({left: pages[pagesNum]})
         }
+        $(".slider-list").animate({left: pages[pagesNum]})
       });
 
       // 今回やるのはスライドショーです。
