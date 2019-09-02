@@ -28,17 +28,20 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+      var titlePosition = $('.title').offset().top;
+
       $(".menu__btn").click(function() {
         if ($(this).data('scroll-place-type') === 'home') {
-          // $(window).animate({ scrollTop: 0});
-          console.log(0);
+          $('html,body').animate({ scrollTop: titlePosition});
         } else if ($(this).data('scroll-place-type') === 'news') {
-          // $(window).animate({ scrollTop: 100});
-          console.log(1);
+          $('html,body').animate({ scrollTop: titlePosition});
         } else if ($(this).data('scroll-place-type') === 'about') {
-          // $(window).animate({ scrollTop: 200});
-          console.log(2);
+          $('html,body').animate({ scrollTop: titlePosition});
         }
+      });
+
+      $('.scrollTopBtn').click(function(){
+        $('html,body').animate({ scrollTop: 0});
       });
 
       $(window).scroll(function() {
