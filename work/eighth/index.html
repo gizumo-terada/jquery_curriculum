@@ -28,16 +28,14 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
-      var titlePosition = $('.title').offset().top;
 
       $(".menu__btn").click(function() {
-        if ($(this).data('scroll-place-type') === 'home') {
-          $('html,body').animate({ scrollTop: titlePosition});
-        } else if ($(this).data('scroll-place-type') === 'news') {
-          $('html,body').animate({ scrollTop: titlePosition});
-        } else if ($(this).data('scroll-place-type') === 'about') {
-          $('html,body').animate({ scrollTop: titlePosition});
-        }
+        $(".contents p").each(function() {
+          console.log(this);
+          if ($('.menu__btn').data('scroll-place-type') === $(this).data('scroll-place-type')) {
+            $('html,body').animate({scrollTop: $(this).offset().top});
+          }
+        });
       });
 
       $('.scrollTopBtn').click(function(){
@@ -66,6 +64,7 @@
       // .offset().top 要素の位置を取得します。
       // .fadeIn() 要素をフェードインさせる。
       // .fadeOut() 要素をフェードアウトさせる。
+      // $().each() DOM要素を1つずつループ処理をする（ループ内で$(this)を使うと要素がひとつずつ取得できる）
     </script>
   </body>
 </html>
