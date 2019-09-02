@@ -30,9 +30,9 @@
     <script>
 
       $(".menu__btn").click(function() {
-        $(".contents p").each(function() {
-          console.log(this);
-          if ($('.menu__btn').data('scroll-place-type') === $(this).data('scroll-place-type')) {
+        var btnTittle = $(this).data('scroll-place-type');
+        $(".title").each(function() {
+          if (btnTittle === $(this).data('scroll-place-type')) {
             $('html,body').animate({scrollTop: $(this).offset().top});
           }
         });
