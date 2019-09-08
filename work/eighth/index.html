@@ -31,11 +31,8 @@
 
       $(".menu__btn").click(function() {
         var btnTittle = $(this).data('scroll-place-type');
-        $(".title").each(function() {
-          if (btnTittle === $(this).data('scroll-place-type')) {
-            $('html,body').animate({scrollTop: $(this).offset().top});
-          }
-        });
+        var scrollPlaceType = $('.contents').find($('[data-scroll-place-type="' + btnTittle + '"]'));
+        $('html,body').animate({scrollTop: scrollPlaceType.offset().top});
       });
 
       $('.scrollTopBtn').click(function(){
