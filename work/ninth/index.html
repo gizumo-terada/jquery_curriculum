@@ -12,9 +12,6 @@
   <body>
     <div class="wrapper">
       <ul class="colorList">
-        <li class="colorList__item">
-          <p class="colorList__title" style="background-color: hexValue"></p>
-        </li>
       </ul>
     </div>
     <script src="../../common/js/jquery.js"></script>
@@ -30,9 +27,8 @@
       })
       .done(function(data) {
         console.log(data);
-        $.each(data.colorsArray, function functionName() {
-          $('.colorList__title').append(data.colorName);
-          $('.colorList__title').remove();
+        $.each(data.colorsArray, function(i,j) {
+          $('.colorList').append('<li class="colorList__item"><p class="colorList__title" style="background-color:'+j.hexValue+' ;">'+j.colorName+' </p></li>');
         })
       });
       //
