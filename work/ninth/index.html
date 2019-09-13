@@ -27,9 +27,20 @@
       })
       .done(function(data) {
         console.log(data);
-        $.each(data.colorsArray, function(i,j) {
-          $('.colorList').append('<li class="colorList__item"><p class="colorList__title" style="background-color:'+j.hexValue+' ;">'+j.colorName+' </p></li>');
+        
+        // appendの場合
+        // $.each(data.colorsArray, function(i,j) {
+        //   $('.colorList').append('<li class="colorList__item"><p class="colorList__title" style="background-color:'+j.hexValue+' ;">'+j.colorName+' </p></li>');
+        // })
+        
+        // .htmlの場合
+        var colorList__items = [];
+        $.each(data.colorsArray, function(index,item) {
+        var hexValue = data.colorsArray[index].hexValue;
+        var colorName = data.colorsArray[index].colorName;
+        colorList__items += '<li class="colorList__item"><p class="colorList__title" style="background-color:'+hexValue+' ;">'+colorName+' </p></li>';
         })
+        $('.colorList').html(colorList__items);
       });
       //
       // 今回の場合は同じ階層にあるdata.jsonに対してリクエストを飛ばして、中にあるオブジェクトを取得します。
