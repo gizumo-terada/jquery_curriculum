@@ -38,19 +38,41 @@
       // $.ajax({}) 外部ファイルやURLに対してデータをリクエストすることができます。
       // 以下は今回使う$.ajaxの基本的な形です。
       //
-      // $.ajax({
-      //   url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
-      //   type: 'GET',
-      //   datatype: 'json',
-      //   data: {
-      //     // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
-      //     applicationId: '1019399324990976605', // (今回はこのIDを使用してください)
-      //     booksGenreId: '001'
-      //   },
-      // }).done(function(data) {
-      //   // この中にデータ取得後の動きを記述していきます。
-      //   console.log(data);
-      // });
+      $.ajax({
+        url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+        type: 'GET',
+        datatype: 'json',
+        data: {
+          // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
+          applicationId: '1019399324990976605', // (今回はこのIDを使用してください)
+          booksGenreId: '001',
+          hits: 20,
+          // keyword: $('#js-search-word'),
+          page: 1,
+          field: 0,
+          carrier: 0,
+          orFlag: 0,
+          count: "",
+          title: "",
+          author: "",
+          publisherName: "",
+          largeImageUrl: ""
+        },
+      }).done(function(data) {
+        // この中にデータ取得後の動きを記述していきます。
+        console.log(data);
+        $('.search__btn').on('click',function() {
+          test();
+        })
+        function test() {
+        $.each(data.Items,function(index,item){
+          var list = $('<li class="lists__item"><div class="lists__item__inner"><a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank"><img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '"><p class="lists__item__detail">作品名：　' + item.Item.title + '</p>' +'<p class="lists__item__detail">作者　：　' + item.Item.author + '</p><p class="lists__item__detail">出版社：　' + item.Item.publisherName + '</p></a></div></li>');
+          $('.lists').append(list);
+        })
+      }
+      }).fail(function(data) {
+
+      });
       //
       //
       // $.ajaxによってデータが取得できたら、必要なデータ(作品名とか作者名とか)を取得します。
