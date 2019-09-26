@@ -63,8 +63,7 @@
         });
 
         function success(data) {
-          $(".coment").empty();
-          
+          $('.coment').remove();
           if (data.hits === 0) {
             $('.lists').before('<div class="coment"></div>');
             var missingComent = $('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
@@ -79,11 +78,12 @@
 
         function error(data) {
           $(".lists").empty();
-          if (data.responseJSON.error_description === "keyword must be set") { //jsonが帰ってきているかどうか
+          $('.coment').remove();
+          if (data.responseJSON.error_description === "keyword must be set") {
             $('.lists').before('<div class="coment"></div>');
             var emptyComent = $('<p class="message">文字が入力されてません。<br>文字を入力してください。</p>');
             $('.coment').prepend(emptyComent);
-          } else { //dataにあるエラー内容の出力
+          } else {
             $('.lists').before('<div class="coment"></div>');
             var missingComent = $('<p class="message">データ通信がされていませんでした。<br>別のキーワードで検索して下さい。</p>');
             $('.coment').prepend(missingComent);
