@@ -57,30 +57,36 @@
             keyword: keyword
           },
         }).done(function(data) {
-          done(data);
-        }).fail(function() {
-          $('.lists').before('<div class="coment"></div>');
-          var missingComent = $('<p class="message">データ通信がされていませんでした。<br>別のキーワードで検索して下さい。</p>');
-          $('.coment').prepend(missingComent);
+          success(data);
+        }).fail(function(data) {
+          error(data);
         });
 
-        function done(data) {
-          $(".coment").empty();
-          $.each(data.Items,function(index,item){
-            var list = $('<li class="lists__item"><div class="lists__item__inner"><a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank"><img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '"><p class="lists__item__detail">作品名：　' + item.Item.title + '</p>' +'<p class="lists__item__detail">作者　：　' + item.Item.author + '</p><p class="lists__item__detail">出版社：　' + item.Item.publisherName + '</p></a></div></li>');
-            $('.lists').prepend(list);
-          })
-          console.log(keyword.length);
-          if (keyword.length === 0) {
-            $(".lists").empty();
+        function success(data) {
+          if (data.hits === 0) {
+            // $('.lists').removeClass(".coment");
+            $('.lists').before('<div class="coment"></div>');
+            var missingComent = $('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
+            $('.coment').prepend(missingComent);
+          } else {
+            $(".coment").empty();
+            $.each(data.Items,function(index,item){
+              var list = $('<li class="lists__item"><div class="lists__item__inner"><a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank"><img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '"><p class="lists__item__detail">作品名：　' + item.Item.title + '</p>' +'<p class="lists__item__detail">作者　：　' + item.Item.author + '</p><p class="lists__item__detail">出版社：　' + item.Item.publisherName + '</p></a></div></li>');
+              $('.lists').prepend(list);
+               //Itemsの中身確認
+            })
+          }
+        }
+
+        function error(data) {
+          // $('.lists').removeClass(".coment");
+          if (data.responseJSON.error_description === "keyword must be set") { //jsonが帰ってきているかどうか
             $('.lists').before('<div class="coment"></div>');
             var emptyComent = $('<p class="message">文字が入力されてません。<br>文字を入力してください。</p>');
             $('.coment').prepend(emptyComent);
-          }
-
-          if (data.hits === 0) {
+          } else { //dataにあるエラー内容の出力
             $('.lists').before('<div class="coment"></div>');
-            var missingComent = $('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
+            var missingComent = $('<p class="message">データ通信がされていませんでした。<br>別のキーワードで検索して下さい。</p>');
             $('.coment').prepend(missingComent);
           }
         }
