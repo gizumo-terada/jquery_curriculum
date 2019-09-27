@@ -42,12 +42,19 @@
       // その結果の処理がdoneとfail
       var pageNum = 0;
       var keywordVal = [];
+      var beforeKeyword = '';
       var num = -1;
       $('.search__btn').on('click',function() {
         var keyword = $('.search__text__input').val();
         pageNum = pageNum + 1;
         num = num + 1;
         keywordVal.push(keyword);
+        
+        if (keyword !== beforeKeyword) {
+          $('.lists').empty();
+          pageNum = 1;
+        }
+        beforeKeyword = keyword;
         $.ajax({
           url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
           type: 'GET',
@@ -72,9 +79,6 @@
             var missingComent = $('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
             $('.coment').prepend(missingComent);
           } else {
-            if (keywordVal[num] !== keywordVal[num-1] && keywordVal[num-1] !== keywordVal[""]) {
-              $('.lists').remove(keywordVal[num-1]);
-            }
             $.each(data.Items,function(index,item) {
               var list = $('<li class="lists__item"><div class="lists__item__inner"><a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank"><img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '"><p class="lists__item__detail">作品名：　' + item.Item.title + '</p>' +'<p class="lists__item__detail">作者　：　' + item.Item.author + '</p><p class="lists__item__detail">出版社：　' + item.Item.publisherName + '</p></a></div></li>');
               $('.lists').prepend(list);
@@ -83,9 +87,9 @@
         }
 
         function error(data) {
-          $(".lists").empty();
+          $('.lists').empty();
           $('.coment').remove();
-          if (data.responseJSON.error_description === "keyword must be set") {
+          if (data.responseJSON.error_description === 'keyword must be set') {
             $('.lists').before('<div class="coment"></div>');
             var emptyComent = $('<p class="message">文字が入力されてません。<br>文字を入力してください。</p>');
             $('.coment').prepend(emptyComent);
