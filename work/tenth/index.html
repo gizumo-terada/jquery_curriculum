@@ -75,6 +75,7 @@
         function success(data) {
           $('.coment').remove();
           if (data.hits === 0) {
+            $('.lists').empty();
             $('.lists').before('<div class="coment"></div>');
             var missingComent = $('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
             $('.coment').prepend(missingComent);
@@ -89,15 +90,21 @@
         function error(data) {
           $('.lists').empty();
           $('.coment').remove();
+          var errorData = [];
           if (data.responseJSON.error_description === 'keyword must be set') {
-            $('.lists').before('<div class="coment"></div>');
-            var emptyComent = $('<p class="message">文字が入力されてません。<br>文字を入力してください。</p>');
-            $('.coment').prepend(emptyComent);
+            errorData = '<div class="coment"><p class="message">文字が入力されてません。<br>文字を入力してください。</p></div>';
+          } else if (data.responseJSON.error_description === 'not found') {
+            errorData = '<div class="coment"><p class="message">対象のデータが存在しませんでした。</p></div>';
+          } else if (data.responseJSON.error_description === 'api logic error') {
+            errorData = '<div class="coment"><p class="message">システムエラーです。<br>長時間続くようであれば、こちらよりごお問い合わせください。</p></div>';
+          } else if (data.responseJSON.error === 'too_many_requests') {
+            errorData = '<div class="coment"><p class="message">しばらく時間を空けてから、ご利用ください。</p></div>';
+          }else if (data.responseJSON.error === 'service_unavailable') {
+            errorData = '<div class="coment"><p class="message">メンテナンス・リクエスト過多です。</p></div>';
           } else {
-            $('.lists').before('<div class="coment"></div>');
-            var missingComent = $('<p class="message">データ通信がされていませんでした。<br>別のキーワードで検索して下さい。</p>');
-            $('.coment').prepend(missingComent);
+            errorData = '<div class="coment"><p class="message">データ通信がされていませんでした。<br>別のキーワードで検索して下さい。</p></div>';
           }
+          $('.coment').prepend($('.lists').before(errorData));
         }
       });
       //
