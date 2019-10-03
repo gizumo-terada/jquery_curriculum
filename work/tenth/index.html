@@ -43,6 +43,10 @@
       var pageNum = 0;
       var beforeKeyword = '';
       $('.search__btn').on('click',function() {
+        setting();
+      });
+
+      function setting() {
         var keyword = $('.search__text__input').val();
         $('.coment').remove();
 
@@ -71,6 +75,7 @@
         }).fail(function(data) {
           error(data);
         });
+      }
 
         function success(data) {
           if (data.hits === 0) {
@@ -126,9 +131,8 @@
                           ' </div>';
             }
           }
-          $('.coment').prepend($('.lists').before(errorData));
+          $('.lists').before(errorData);
         }
-      });
       //
       //
       // $.ajaxによってデータが取得できたら、必要なデータ(作品名とか作者名とか)を取得します。
