@@ -41,20 +41,19 @@
       // 検索キーワードを元にAPI側にリクエストを送る(alax通信)
       // その結果の処理がdoneとfail
       var pageNum = 0;
-      var keywordVal = [];
       var beforeKeyword = '';
-      var num = -1;
       $('.search__btn').on('click',function() {
         var keyword = $('.search__text__input').val();
-        pageNum = pageNum + 1;
-        num = num + 1;
-        keywordVal.push(keyword);
-        
+        $('.coment').remove();
+
         if (keyword !== beforeKeyword) {
           $('.lists').empty();
           pageNum = 1;
+          beforeKeyword = keyword;
+        } else {
+          pageNum = pageNum + 1;
         }
-        beforeKeyword = keyword;
+
         $.ajax({
           url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
           type: 'GET',
@@ -72,37 +71,60 @@
         }).fail(function(data) {
           error(data);
         });
+
         function success(data) {
-          $('.coment').remove();
           if (data.hits === 0) {
             $('.lists').empty();
             $('.lists').before('<div class="coment"></div>');
             var missingComent = $('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
             $('.coment').prepend(missingComent);
           } else {
+            var list = "";
             $.each(data.Items,function(index,item) {
-              var list = $('<li class="lists__item"><div class="lists__item__inner"><a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank"><img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '"><p class="lists__item__detail">作品名：　' + item.Item.title + '</p>' +'<p class="lists__item__detail">作者　：　' + item.Item.author + '</p><p class="lists__item__detail">出版社：　' + item.Item.publisherName + '</p></a></div></li>');
-              $('.lists').prepend(list);
+              list +=  '<li class="lists__item">' +
+                       '<div class="lists__item__inner">' +
+                       ' <a href="' + item.Item.itemUrl + '"class="lists__item__link" target="_blank">' +
+                       ' <img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '">' +
+                       ' <p class="lists__item__detail">作品名：　' + item.Item.title + '</p>' + 
+                       ' <p class="lists__item__detail">作者　：　' + item.Item.author + '</p>' +
+                       ' <p class="lists__item__detail">出版社：　' + item.Item.publisherName + '</p>' +
+                       ' </a>' +
+                       ' </div>' +
+                       ' </li>';
             })
+            $('.lists').prepend(list);
           }
         }
 
         function error(data) {
           $('.lists').empty();
-          $('.coment').remove();
-          var errorData = [];
-          if (data.responseJSON.error_description === 'keyword must be set') {
-            errorData = '<div class="coment"><p class="message">文字が入力されてません。<br>文字を入力してください。</p></div>';
-          } else if (data.responseJSON.error_description === 'not found') {
-            errorData = '<div class="coment"><p class="message">対象のデータが存在しませんでした。</p></div>';
-          } else if (data.responseJSON.error_description === 'api logic error') {
-            errorData = '<div class="coment"><p class="message">システムエラーです。<br>長時間続くようであれば、こちらよりごお問い合わせください。</p></div>';
-          } else if (data.responseJSON.error === 'too_many_requests') {
-            errorData = '<div class="coment"><p class="message">しばらく時間を空けてから、ご利用ください。</p></div>';
-          }else if (data.responseJSON.error === 'service_unavailable') {
-            errorData = '<div class="coment"><p class="message">メンテナンス・リクエスト過多です。</p></div>';
+          var errorData;
+          if (!data.responseJSON) {
+            errorData = '<div class="coment">' +
+                        ' <p class="message">データ通信がされていませんでした。<br>別のキーワードで検索して下さい。</p>' +
+                        ' </div>';
           } else {
-            errorData = '<div class="coment"><p class="message">データ通信がされていませんでした。<br>別のキーワードで検索して下さい。</p></div>';
+            if (data.responseJSON.error_description === 'keyword must be set') {
+              errorData = '<div class="coment">' +
+                          ' <p class="message">文字が入力されてません。<br>文字を入力してください。</p>' +
+                          ' </div>';
+            } else if (data.responseJSON.error_description === 'not found') {
+              errorData = '<div class="coment">' +
+                          ' <p class="message">対象のデータが存在しませんでした。</p>' +
+                          ' </div>';
+            } else if (data.responseJSON.error_description === 'api logic error') {
+              errorData = '<div class="coment">' +
+                          ' <p class="message">システムエラーです。<br>長時間続くようであれば、こちらよりごお問い合わせください。</p>' +
+                          ' </div>';
+            } else if (data.responseJSON.error_description === 'number of allowed requests has been exceeded for this API. please try again soon.') {
+              errorData = '<div class="coment">' +
+                          ' <p class="message">しばらく時間を空けてから、ご利用ください。</p>' +
+                          ' </div>';
+            } else if (data.responseJSON.error_description === 'keyword length must be over 2 characters') {
+              errorData = '<div class="coment">' +
+                          ' <p class="message">2文字以上入力してください。</p>' +
+                          ' </div>';
+            }
           }
           $('.coment').prepend($('.lists').before(errorData));
         }
